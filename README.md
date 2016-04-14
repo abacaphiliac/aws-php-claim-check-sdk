@@ -25,7 +25,7 @@ meaning you can publish to SQS+S3 via this PHP lib and read via the AWS Extended
 
 ## Differences
 * Messages published from SNS to SQS contain a nested Claim Check message structure, 
-so the Java SDK is not be able to natively consume messages published to SNS (really???).
+so the Java SDK is not be able to natively consume messages published to SNS (citation needed).
 * Usage of the pattern is not configurable by message size, nor can the pattern be disabled in this lib.
 Use the wrapped clients if you do not want to use Claim Check.
 * The AWS Extended Client Library will always delete the message from S3 when the message is deleted from SQS.
