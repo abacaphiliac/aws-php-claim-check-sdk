@@ -2,7 +2,7 @@
     "name": "abacaphiliac/aws-sdk-php-claim-check",
     "description": "Claim Check enterprise integration pattern, implemented via AWS PHP SDK.",
     "minimum-stability": "stable",
-    "license": "proprietary",
+    "license": "MIT",
     "authors": [
         {
             "name": "Timothy Younger",
