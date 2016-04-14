@@ -1,0 +1,87 @@
+<project name="abacaphiliac/aws-sdk-php-claim-check" default="develop" basedir=".">
+    <property name="fixtures" value="wiremock" override="true"/>
+    
+    <target name="develop">
+        <phingcall target="lint"/>
+        <phingcall target="tests"/>
+    </target>
+
+    <target name="lint">
+        <phingcall target="php-lint"/>
+        <phingcall target="phpcs"/>
+    </target>
+
+    <target name="php-lint">
+        <exec command="vendor/bin/parallel-lint src tests"
+              passthru="true"
+              output="/dev/stdout"
+              error="/dev/stdout"
+              checkreturn="true"/>
+    </target>
+
+    <target name="phpcs">
+        <exec command="vendor/bin/phpcs --standard=PSR2 --extensions=php --severity=1 --colors -p src/ tests/"
+              passthru="true"
+              output="/dev/stdout"
+              error="/dev/stdout"
+              checkreturn="true"/>
+    </target>
+    
+    <target name="tests">
+        <phingcall target="unit-tests"/>
+    </target>
+    
+    <target name="unit-tests">
+        <exec command="./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover"
+              passthru="true"
+              output="/dev/stdout"
+              error="/dev/stdout"
+              checkreturn="true"/>
+    </target>
+    
+    <target name="feature-tests">
+        <phingcall target="set-up-feature-fixtures"/>
+        <exec command="./vendor/bin/behat --colors"
+              passthru="true"
+              output="/dev/stdout"
+              error="/dev/stdout"
+              checkreturn="true"/>
+    </target>
+    
+    <target name="set-up-feature-fixtures">
+        <if>
+            <equals arg1="${fixtures}" arg2="terraform"/>
+            <then>
+                <phingcall target="set-up-terraform-feature-fixtures"/>
+            </then>
+            <else>
+                <phingcall target="set-up-wiremock-feature-fixtures"/>
+            </else>
+        </if>
+    </target>
+    
+    <target name="set-up-terraform-feature-fixtures">
+        <copy file="features/fixtures/terraform/variables_override.tf.dist"
+              tofile="features/fixtures/terraform/variables_override.tf.dist"
+              overwrite="false"/>
+        <exec command="terraform apply"
+              dir="features/fixtures/terraform"
+              passthru="true"
+              output="/dev/stdout"
+              error="/dev/stdout"
+              checkreturn="true"/>
+    </target>
+
+    <target name="tear-down-terraform-feature-fixtures">
+        <exec command="terraform destroy"
+              dir="features/fixtures/terraform"
+              passthru="true"
+              output="/dev/stdout"
+              error="/dev/stdout"
+              checkreturn="true"/>
+    </target>
+    
+    <target name="set-up-wiremock-feature-fixtures">
+        <fail message="TODO: Boot wiremock daemon and set up stubs."/>
+    </target>
+</project>

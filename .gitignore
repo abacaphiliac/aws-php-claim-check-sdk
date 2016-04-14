@@ -1,0 +1,6 @@
+vendor
+.env
+behat.yml
+composer.lock
+coverage.clover
+phpunit.xml

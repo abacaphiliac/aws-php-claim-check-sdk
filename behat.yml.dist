@@ -1,0 +1,5 @@
+default:
+    suites:
+        s3-data-store:
+            paths: [ %paths.base%/features/s3-data-store ]
+            contexts: [ AbacaphiliacFeature\AwsSdk\ClaimCheck\Bootstrap\S3DataStoreContext ]
